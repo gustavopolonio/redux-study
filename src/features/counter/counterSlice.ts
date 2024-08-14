@@ -1,13 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { RootState } from '../../app/store'
 
 interface CounterState {
   value: number
 }
 
-const initialState = {
+const initialState: CounterState = {
   value: 0
-} as CounterState
+}
 
 export const counterSlice = createSlice({
   name: 'counter',
