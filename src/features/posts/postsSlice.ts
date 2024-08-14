@@ -5,11 +5,14 @@ interface Post {
   id: string
   title: string
   content: string
-} 
+  createdBy: string
+}
+
+interface PostUpdate extends Omit<Post, 'createdBy'> {}
 
 const initialState: Post[] = [
-  { id: '1', title: 'First post', content: 'Hello guys :)' },
-  { id: '2', title: 'Second post', content: 'Here we come' }
+  { id: '1', title: 'First post', content: 'Hello guys :)', createdBy: '0' },
+  { id: '2', title: 'Second post', content: 'Here we come', createdBy: '1' }
 ]
 
 export const postsSlice = createSlice({
@@ -20,17 +23,18 @@ export const postsSlice = createSlice({
       reducer(state, action: PayloadAction<Post>) {
         state.push(action.payload)
       },
-      prepare(title: string, content: string) {
+      prepare(title: string, content: string, createdBy: string) {
         return {
           payload: {
             id: nanoid(),
             title,
-            content
+            content,
+            createdBy
           }
         }
       }
     },
-    updatePost: (state, action: PayloadAction<Post>) => {
+    updatePost: (state, action: PayloadAction<PostUpdate>) => {
       const { id, title, content } = action.payload
 
       const post = state.find(post => post.id === id)
