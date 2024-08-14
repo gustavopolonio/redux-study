@@ -1,14 +1,20 @@
-import "./App.css"
-import { Counter } from "./components/Counter"
-import { PostForm } from "./components/PostForm"
-import { PostsList } from "./components/PostsList"
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { FeedPostsPage } from "./pages/FeedPostsPage";
+import { PostPage } from "./pages/PostPage";
+
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <FeedPostsPage />,
+  },
+  {
+    path: '/posts/:postId',
+    element: <PostPage />
+  }
+])
 
 export const App = () => {
   return (
-    <div>
-      <Counter />
-      <PostsList />
-      <PostForm />
-    </div>
+    <RouterProvider router={router} />
   )
 }
