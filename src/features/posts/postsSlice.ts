@@ -17,9 +17,19 @@ export const postsSlice = createSlice({
   reducers: {
     addPost: (state, action: PayloadAction<Post>) => {
       state.push(action.payload)
+    },
+    updatePost: (state, action: PayloadAction<Post>) => {
+      const { id, title, content } = action.payload
+
+      const post = state.find(post => post.id === id)
+
+      if (post) {
+        post.title = title
+        post.content = content
+      }
     }
   }
 })
 
-export const { addPost } = postsSlice.actions
+export const { addPost, updatePost } = postsSlice.actions
 export const postsReducer = postsSlice.reducer

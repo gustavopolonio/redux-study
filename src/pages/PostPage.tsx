@@ -18,7 +18,12 @@ export function PostPage() {
     <div>
       <h2>{post.title}</h2>
       <p>{post.content}</p>
-      <Link to='/'>Back to home</Link>
+      <div>
+        <Link to={`/posts/${post.id}/edit`}>Edit post</Link>
+      </div>
+      <div>
+        <Link to='/'>Back to home</Link>
+      </div>
     </div>
   )
 }
