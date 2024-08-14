@@ -1,18 +1,20 @@
 import { createSlice, nanoid, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
+import { sub } from "date-fns";
 
 interface Post {
   id: string
   title: string
   content: string
   createdBy: string
+  createdAt: string
 }
 
 interface PostUpdate extends Omit<Post, 'createdBy'> {}
 
 const initialState: Post[] = [
-  { id: '1', title: 'First post', content: 'Hello guys :)', createdBy: '0' },
-  { id: '2', title: 'Second post', content: 'Here we come', createdBy: '1' }
+  { id: '1', title: 'First post', content: 'Hello guys :)', createdBy: '0', createdAt: sub(new Date(), { minutes: 10 }).toISOString() },
+  { id: '2', title: 'Second post', content: 'Here we come', createdBy: '1', createdAt: sub(new Date(), { minutes: 5 }).toISOString() }
 ]
 
 export const postsSlice = createSlice({
@@ -29,7 +31,8 @@ export const postsSlice = createSlice({
             id: nanoid(),
             title,
             content,
-            createdBy
+            createdBy,
+            createdAt: new Date().toISOString()
           }
         }
       }

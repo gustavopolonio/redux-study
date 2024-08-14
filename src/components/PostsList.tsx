@@ -2,15 +2,18 @@ import { Link } from "react-router-dom"
 import { useAppSelector } from "../app/hooks"
 import { selectAllPosts } from "../features/posts/postsSlice"
 import { PostAuthor } from "./PostAuthor"
+import { PostTimeAgo } from "./PostTimeAgo"
 
 export function PostsList() {
   const posts = useAppSelector(selectAllPosts)
+  const orderedPosts = posts.slice().sort((a, b) => b.createdAt.localeCompare(a.createdAt))
 
   return (
     <div>
-      {posts.map(post => (
+      {orderedPosts.map(post => (
         <li key={post.id}>
           <h2>{post.title}</h2>
+          <PostTimeAgo createdAt={post.createdAt} />
           <PostAuthor userId={post.createdBy} />
           <p>{post.content}</p>
           <Link to={`/posts/${post.id}`}>

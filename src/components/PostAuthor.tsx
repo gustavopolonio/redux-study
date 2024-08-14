@@ -7,8 +7,6 @@ interface PostAuthorProps {
 
 export function PostAuthor({ userId }: PostAuthorProps) {
   const user = useAppSelector(state => selectUserByID(state, userId))
-  console.log(userId)
-  console.log(user)
 
   return (
     <span>
