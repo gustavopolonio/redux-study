@@ -21,11 +21,7 @@ export function PostForm() {
     const title = elements.postTitle.value
     const content = elements.postContent.value
 
-    dispatch(addPost({
-      id: nanoid(),
-      title,
-      content
-    }))
+    dispatch(addPost(title, content))
 
     e.currentTarget.reset()
   }
