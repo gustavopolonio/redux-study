@@ -3,6 +3,7 @@ import { useAppSelector } from "../app/hooks"
 import { selectPostByID } from "../features/posts/postsSlice"
 import { PostAuthor } from "../components/PostAuthor"
 import { PostTimeAgo } from "../components/PostTimeAgo"
+import { ReactionButtons } from "../components/ReactionButtons"
 
 export function PostPage() {
   const { postId } = useParams()
@@ -23,6 +24,7 @@ export function PostPage() {
       <PostTimeAgo createdAt={post.createdAt} />
       <PostAuthor userId={post.createdBy} />
       <p>{post.content}</p>
+      <ReactionButtons post={post} />
       <div>
         <Link to={`/posts/${post.id}/edit`}>Edit post</Link>
       </div>
