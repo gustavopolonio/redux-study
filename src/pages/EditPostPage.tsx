@@ -1,6 +1,7 @@
-import { Link, useNavigate, useParams } from "react-router-dom"
+import {  useNavigate, useParams } from "react-router-dom"
 import { useAppDispatch, useAppSelector } from "../app/hooks"
 import { selectPostByID, updatePost } from "../features/posts/postsSlice"
+import { selectCurrentUserID } from "../features/auth/authSlice"
 
 interface PostFormFields extends HTMLFormControlsCollection {
   postTitle: HTMLInputElement

@@ -2,11 +2,22 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { FeedPostsPage } from "./pages/FeedPostsPage";
 import { PostPage } from "./pages/PostPage";
 import { EditPostPage } from "./pages/EditPostPage";
+import { LoginPage } from "./pages/LoginPage";
+import { Navbar } from "./components/Navbar";
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <FeedPostsPage />,
+    element: <LoginPage />
+  },
+  {
+    path: '/posts',
+    element: (
+      <>
+        <Navbar />
+        <FeedPostsPage />
+      </>
+    ),
   },
   {
     path: '/posts/:postId',
