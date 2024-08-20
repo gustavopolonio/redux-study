@@ -23,11 +23,11 @@ export function PostPage() {
   return (
     <div>
       <h2>{post.title}</h2>
-      <PostTimeAgo createdAt={post.createdAt} />
-      <PostAuthor userId={post.createdBy} />
+      <PostTimeAgo createdAt={post.date} />
+      <PostAuthor userId={post.user} />
       <p>{post.content}</p>
       <ReactionButtons post={post} />
-      {userId === post.createdBy && (
+      {userId === post.user && (
         <div>
           <Link to={`/posts/${post.id}/edit`}>Edit post</Link>
         </div>
