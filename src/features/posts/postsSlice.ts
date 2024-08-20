@@ -28,6 +28,7 @@ interface PostsState {
 }
 
 export type ReactionsName = keyof PostReactions
+interface NewPost extends Pick<Post, 'user' | 'title' | 'content'> {}
 interface PostUpdate extends Pick<Post, 'id' | 'title' | 'content'> {}
 interface PostUpdateReaction extends Pick<Post, 'id'> {
   reaction: ReactionsName
@@ -49,13 +50,13 @@ export const fetchPosts = createAppAsyncThunk(
   }
 )
 
-const initialReactions = {
-  thumbsUp: 0,
-  tada: 0,
-  heart: 0,
-  rocket: 0,
-  eyes: 0
-}
+export const addNewPost = createAppAsyncThunk(
+  'posts/addNewPost',
+  async (initialPost: NewPost) => {
+    const response = await client.post<Post>('/fakeApi/posts', initialPost)
+    return response.data
+  }
+)
 
 const initialState: PostsState = {
   posts: [],
@@ -67,23 +68,6 @@ export const postsSlice = createSlice({
   name: 'posts',
   initialState,
   reducers: {
-    addPost: {
-      reducer(state, action: PayloadAction<Post>) {
-        state.posts.push(action.payload)
-      },
-      prepare(title: string, content: string, user: string) {
-        return {
-          payload: {
-            id: nanoid(),
-            title,
-            content,
-            user,
-            reactions: initialReactions,
-            date: new Date().toISOString()
-          }
-        }
-      }
-    },
     updatePost: (state, action: PayloadAction<PostUpdate>) => {
       const { id, title, content } = action.payload
 
@@ -120,10 +104,13 @@ export const postsSlice = createSlice({
         state.status = 'completed'
         state.posts.push(...action.payload)
       })
+      .addCase(addNewPost.fulfilled, (state, action) => {
+        state.posts.push(action.payload)
+      })
   },
 })
 
-export const { addPost, updatePost, updateReaction } = postsSlice.actions
+export const { updatePost, updateReaction } = postsSlice.actions
 export const postsReducer = postsSlice.reducer
 
 export const selectAllPosts = (state: RootState) => state.posts.posts

@@ -1,6 +1,7 @@
+import { useState } from "react"
 import { useAppDispatch, useAppSelector } from "../app/hooks"
 import { selectCurrentUserID } from "../features/auth/authSlice"
-import { addPost } from "../features/posts/postsSlice"
+import { addNewPost } from "../features/posts/postsSlice"
 
 interface PostFormFields extends HTMLFormControlsCollection {
   postTitle: HTMLInputElement
@@ -14,17 +15,25 @@ interface PostFormElements extends HTMLFormElement {
 export function PostForm() {
   const dispatch = useAppDispatch()
   const userId = useAppSelector(selectCurrentUserID)
+  const [addNewPostStatus, setAddNewPostStatus] = useState<'idle' | 'pending'>('idle')
 
-  function handleCreatePost(e: React.FormEvent<PostFormElements>) {
+  async function handleCreatePost(e: React.FormEvent<PostFormElements>) {
     e.preventDefault()
 
-    const { elements } = e.currentTarget
-    const title = elements.postTitle.value
-    const content = elements.postContent.value
+    const form = e.currentTarget
+    const title = form.elements.postTitle.value
+    const content = form.elements.postContent.value
 
     if (userId) {
-      dispatch(addPost(title, content, userId))
-      e.currentTarget.reset()
+      try {
+        setAddNewPostStatus('pending')
+        await dispatch(addNewPost({ title, content, user: userId })).unwrap()
+        form.reset()
+      } catch (error) {
+        console.error('Failed to save the post: ', error)
+      } finally {
+        setAddNewPostStatus('idle')
+      }
     }
   }
 
@@ -43,7 +52,7 @@ export function PostForm() {
           <textarea name="postContent" required />
         </label>
 
-        <button type="submit">Create post</button>
+        <button type="submit" disabled={addNewPostStatus === 'pending'}>Create post</button>
       </form>
     </section>
   )
