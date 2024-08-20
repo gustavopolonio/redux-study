@@ -4,6 +4,8 @@ import { PostPage } from "./pages/PostPage";
 import { EditPostPage } from "./pages/EditPostPage";
 import { LoginPage } from "./pages/LoginPage";
 import { Navbar } from "./components/Navbar";
+import { useAppDispatch } from "./app/hooks";
+import { fetchUsers } from "./features/users/usersSlice";
 
 const router = createBrowserRouter([
   {
@@ -30,6 +32,10 @@ const router = createBrowserRouter([
 ])
 
 export const App = () => {
+  const dispatch = useAppDispatch()
+
+  dispatch(fetchUsers())
+
   return (
     <RouterProvider router={router} />
   )
